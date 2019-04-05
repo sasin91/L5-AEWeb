@@ -1,0 +1,34 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Concerns\Executable;
+use App\Contracts\Action as ActionContract;
+
+class DummyClass implements ActionContract
+{
+	use Executable;
+
+	/**
+	 * Create a new DummyClass Action.
+	 
+	 * @param  array $attributes  
+	 * @return void
+	 */
+	public function __construct(array $attributes)
+	{
+		foreach ($attributes as $key => $value) {
+			$this->$key = $value;
+		}
+	}
+
+	/**
+	 * Execute the command
+	 * 
+	 * @return mixed             
+	 */
+	public function run()
+	{
+		//
+	}
+}
