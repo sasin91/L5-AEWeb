@@ -24,3 +24,16 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->state(User::class, 'super admin', []);
+$factory->afterCreatingState(User::class, 'super admin', function ($user) {
+    $roleModel = config('permission.models.role', \Spatie\Permission\Models\Role::class);
+
+    if (! $roleModel::where('name', 'Super Admin')->exists()) {
+        $permissionModel = config('permission.models.permission', \Spatie\Permission\Models\Permission::class);
+
+        resolve(RolesAndPermissionsSeeder::class)->createSuperAdmin($roleModel, $permissionModel);
+    }
+
+	$user->assignRole('Super Admin');
+});
