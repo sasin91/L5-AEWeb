@@ -34,13 +34,6 @@ class Account extends Model
 
     public $timestamps = false;
 
-    // The only thing User and Account really have in common is the email.
-    // In a case where a server already has accounts,
-    // and then a web User is created with a different email,
-    // it wouldn't really be easy to link.
-    //
-    // Maybe a like pivot on web db for user_accounts could be worthwhile?
-    
     /**
      * Map the account flags to an expansion name
      *
@@ -49,5 +42,15 @@ class Account extends Model
     public function getExpansionAttribute(): string
     {
         return AccountFlag::toExpansionName($this->flags);
+    }
+
+    /**
+     * Link to this model
+     * 
+     * @return string
+     */
+    public function getLinkAttribute(): string
+    {
+        return url('accounts', $this);
     }
 }

@@ -16,12 +16,13 @@ class Action extends Model
         'actionable_type',
         'actionable_id',
         'actionable_attributes',
-        'executed_at'
+        'executed_at',
+        'class_name'
     ];
 
     protected $casts = [
         'actionable_attributes' => 'array',
-        'executed_at' => 'timestamp'
+        'executed_at' => 'datetime'
     ];
 
     /**
@@ -37,6 +38,7 @@ class Action extends Model
             $model->creator()->associate(Auth::user());
             $model->actionable()->associate($actionable);
             $model->actionable_attributes = get_object_vars($action);
+            $model->class_name = get_class($action);
             $model->saveOrFail();
             
             $action->run();
@@ -63,6 +65,16 @@ class Action extends Model
     public function actionable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Link to this model
+     * 
+     * @return string
+     */
+    public function getLinkAttribute(): string
+    {
+        return url('actions', $this);
     }
 
     /**

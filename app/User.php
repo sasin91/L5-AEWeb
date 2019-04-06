@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -46,5 +47,15 @@ class User extends Authenticatable
     public function actions(): HasMany
     {
         return $this->hasMany(Action::class, 'creator_id');
+    }
+
+    /**
+     * Link to this model
+     * 
+     * @return string
+     */
+    public function getLinkAttribute(): string
+    {
+        return url('users', $this);
     }
 }
