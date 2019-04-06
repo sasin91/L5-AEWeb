@@ -83,6 +83,8 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        $user->assignRole('Player');
+
         CreateAccount::execute($user, [
             'name' => $request->input('name'),
             'password' => (new Sha1Hasher)->make($request->input('password'), ['name' => $request->input('name')]),

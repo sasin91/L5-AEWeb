@@ -8,6 +8,8 @@ use App\ServerStrategy;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Tests\ImportsAscEmuDatabases;
 use Tests\TestCase;
 
@@ -19,6 +21,21 @@ class RegistrationTest extends TestCase
         'ascemu_logon',
         'mysql'
     ];
+
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        resolve(\RolesAndPermissionsSeeder::class)->createPlayer(
+            new Role,
+            new Permission
+        );
+    }
 
     public function testUserNameCannotContainSpaces()
     {
@@ -59,6 +76,28 @@ class RegistrationTest extends TestCase
             'acc_name' => $name,
             'flags' => AccountFlag::DEFAULT
         ], 'ascemu_logon');
+    }
+
+    public function testItAssignsPlayerRoleToTheUser()
+    {
+        $this->importAscEmuLogonDatabase();
+
+        $this
+            ->postJson('/register', $this->validParams([
+                'email' => $email = $this->faker()->safeEmail,
+                'name' => $name = $this->faker()->firstname
+            ]))
+            ->assertRedirect('/home');
+
+        $user = User::query()->where([
+            'email' => $email,
+            'name' => $name
+        ])->firstOrFail();
+
+        $this->assertTrue(
+            $user->hasRole('Player'),
+            'User was not assigned Player role.'
+        );
     }
 
     public function validParams(array $overrides = [])
