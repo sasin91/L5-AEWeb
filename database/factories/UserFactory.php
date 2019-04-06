@@ -35,5 +35,5 @@ $factory->afterCreatingState(User::class, 'super admin', function ($user) {
         resolve(RolesAndPermissionsSeeder::class)->createSuperAdmin($roleModel, $permissionModel);
     }
 
-	$user->assignRole('Super Admin');
+    $user->assignRole('Super Admin');
 });

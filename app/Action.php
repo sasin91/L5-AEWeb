@@ -69,7 +69,7 @@ class Action extends Model
 
     /**
      * Link to this model
-     * 
+     *
      * @return string
      */
     public function getLinkAttribute(): string

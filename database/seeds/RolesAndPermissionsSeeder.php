@@ -13,16 +13,16 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(PermissionRegistrar $permissionRegistrar)
     {
-    	$permissionRegistrar->forgetCachedPermissions();
+        $permissionRegistrar->forgetCachedPermissions();
 
-    	$permissionModel = $permissionRegistrar->getPermissionClass();
-    	$roleModel = $permissionRegistrar->getRoleClass();
+        $permissionModel = $permissionRegistrar->getPermissionClass();
+        $roleModel = $permissionRegistrar->getRoleClass();
 
         $this->createPlayer($roleModel, $permissionModel);
 
         $this->createSuperAdmin($roleModel, $permissionModel);
 
-    	$this->createForumModerator($roleModel, $permissionModel);
+        $this->createForumModerator($roleModel, $permissionModel);
     }
 
     public function createPlayer($roleModel, $permissionModel)
@@ -48,15 +48,15 @@ class RolesAndPermissionsSeeder extends Seeder
 
     public function createForumModerator($roleModel, $permissionModel)
     {
-    	$forumModerator = $roleModel::create(['name' => 'Forum moderator']);
-    	$forumModerator->givePermissionTo([
-    		$permissionModel::create(['name' => 'create forum categories']),
-    		$permissionModel::create(['name' => 'edit forum categories']),
-    		$permissionModel::create(['name' => 'delete forum categories']),
+        $forumModerator = $roleModel::create(['name' => 'Forum moderator']);
+        $forumModerator->givePermissionTo([
+            $permissionModel::create(['name' => 'create forum categories']),
+            $permissionModel::create(['name' => 'edit forum categories']),
+            $permissionModel::create(['name' => 'delete forum categories']),
 
-    		$permissionModel::create(['name' => 'edit forum topics']),
-    		$permissionModel::create(['name' => 'lock forum topics']),
-    		$permissionModel::create(['name' => 'delete forum topics'])
-    	]);
+            $permissionModel::create(['name' => 'edit forum topics']),
+            $permissionModel::create(['name' => 'lock forum topics']),
+            $permissionModel::create(['name' => 'delete forum topics'])
+        ]);
     }
 }

@@ -46,7 +46,7 @@ class Account extends Model
 
     /**
      * Link to this model
-     * 
+     *
      * @return string
      */
     public function getLinkAttribute(): string

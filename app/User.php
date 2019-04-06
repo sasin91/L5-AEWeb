@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     /**
      * Link to this model
-     * 
+     *
      * @return string
      */
     public function getLinkAttribute(): string

@@ -14,28 +14,15 @@ class ActionController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $this->authorize('list', new Action);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return view('actions.index')
+            ->with(
+                'actions',
+                Action::with('creator', 'actionable')
+                    ->latest()
+                    ->paginate()
+            );
     }
 
     /**
@@ -46,30 +33,9 @@ class ActionController extends Controller
      */
     public function show(Action $action)
     {
-        //
-    }
+        $this->authorize('view', $action);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Action  $action
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Action $action)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Action  $action
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Action $action)
-    {
-        //
+        return view('actions.show')->with('action', $action->loadMissing('creator', 'actionable'));
     }
 
     /**
@@ -80,6 +46,10 @@ class ActionController extends Controller
      */
     public function destroy(Action $action)
     {
-        //
+        $this->authorize('delete', $action);
+
+        $action->delete();
+
+        return back()->with('status', __('Action deleted.'));
     }
 }
