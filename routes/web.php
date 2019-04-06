@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('home', 'HomeController@index');
+    Route::get('home/settings', 'HomeSettingsController@index');
+    Route::get('home/actions', 'HomeActionsController@index');
 
-Route::middleware('auth')->resource('actions', 'ActionController')->except('create', 'store', 'edit', 'update');
+    Route::resource('actions', 'ActionController')->except('create', 'store', 'edit', 'update');
+});

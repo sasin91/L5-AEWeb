@@ -11,13 +11,16 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @stack('scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    @stack('fonts')
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
     <div id="app">
@@ -34,9 +37,11 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         @can('list actions')
-                            @link(['to' => 'actions'])
-                                {{ __('Actions') }}
-                            @endlink
+                            <li class="nav-item">
+                                @link(['to' => 'actions'])
+                                    {{ __('Actions') }}
+                                @endlink
+                            </li>
                         @endcan
                     </ul>
 
@@ -44,13 +49,17 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            @link(['to' => 'login'])
-                                {{ __('Login') }}
-                            @endlink
+                            <li class="nav-item">
+                                @link(['to' => 'login'])
+                                    {{ __('Login') }}
+                                @endlink
+                            </li>
 
-                            @link(['to' => 'register'])
-                                {{ __('Register') }}
-                            @endlink
+                            <li class="nav-item">
+                                @link(['to' => 'register'])
+                                    {{ __('Register') }}
+                                @endlink
+                            </li>
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -76,6 +85,15 @@
         </nav>
 
         <main class="py-4">
+            {{-- Laracasts/flash --}}
+            @include('flash::message')
+
+            @if(session('status'))
+                @alert(['state' => 'info'])
+                    {{ session('status') }}
+                @endalert
+            @endif
+            
             @yield('content')
         </main>
     </div>

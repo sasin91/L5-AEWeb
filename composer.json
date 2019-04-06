@@ -12,6 +12,7 @@
         "bensampo/laravel-enum": "^1.17",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "laracasts/flash": "^3.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "predis/predis": "^1.1",

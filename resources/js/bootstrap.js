@@ -12,6 +12,8 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+
+    window.$('#flash-overlay-modal').modal();
 } catch (e) {
 }
 

@@ -34,5 +34,8 @@ class AppServiceProvider extends ServiceProvider
         
         Blade::component('components.link', 'link');
         Blade::component('components.table', 'table');
+        Blade::component('components.alert', 'alert');
+        Blade::component('components.tab-link', 'tabLink');
+        Blade::component('components.tab-panel', 'tabPanel');
     }
 }
