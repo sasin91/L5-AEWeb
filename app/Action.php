@@ -12,22 +12,22 @@ use Illuminate\Support\Facades\Auth;
 class Action extends Model
 {
     protected $fillable = [
-    	'creator_id',
-    	'actionable_type',
-    	'actionable_id',
-    	'actionable_attributes',
+        'creator_id',
+        'actionable_type',
+        'actionable_id',
+        'actionable_attributes',
         'executed_at'
     ];
 
     protected $casts = [
-    	'actionable_attributes' => 'array',
+        'actionable_attributes' => 'array',
         'executed_at' => 'timestamp'
     ];
 
     /**
      * Execute the given action
-     * 
-     * @param  ActionContract   $action 
+     *
+     * @param  ActionContract   $action
      * @param  Model            $actionable
      * @return mixed
      */
@@ -47,29 +47,29 @@ class Action extends Model
 
     /**
      * Creator of the action
-     * 
+     *
      * @return BelongsTo
      */
     public function creator(): BelongsTo
     {
-    	return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**
      * The actionable model
-     * 
-     * @return MorphTo 
+     *
+     * @return MorphTo
      */
     public function actionable(): MorphTo
     {
-    	return $this->morphTo();
+        return $this->morphTo();
     }
 
     /**
      * Mark the action as executed
-     * 
-     * @param  \DateTimeInterface|null $timestamp 
-     * @return $this            
+     *
+     * @param  \DateTimeInterface|null $timestamp
+     * @return $this
      */
     public function markAsExecuted($timestamp = null)
     {

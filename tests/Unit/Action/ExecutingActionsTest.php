@@ -11,27 +11,27 @@ use Tests\__Fixtures__\FakeAction;
 
 class ExecutingActionsTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	public function testItStoresTheActionInTheActionsTable()
-	{
-		$this->be($actionable = factory(User::class)->create());
+    public function testItStoresTheActionInTheActionsTable()
+    {
+        $this->be($actionable = factory(User::class)->create());
 
-		$action = new FakeAction($attributes = [
-			'bar' => 'baz',
-			'foo' => 'bar'
-		]);
-		
-		$actionModel = Action::execute($action, $actionable);
+        $action = new FakeAction($attributes = [
+            'bar' => 'baz',
+            'foo' => 'bar'
+        ]);
+        
+        $actionModel = Action::execute($action, $actionable);
 
-		$this->assertDatabaseHas('actions', [
-			'id' => $actionModel->id,
-			'creator_id' => $actionable->id,
-			'actionable_type' => User::class,
-			'actionable_id' => $actionable->id,
-			// 'actionable_attributes' => '{"bar": "baz", "foo": "bar"}'
-		]);
+        $this->assertDatabaseHas('actions', [
+            'id' => $actionModel->id,
+            'creator_id' => $actionable->id,
+            'actionable_type' => User::class,
+            'actionable_id' => $actionable->id,
+            // 'actionable_attributes' => '{"bar": "baz", "foo": "bar"}'
+        ]);
 
-		$this->assertEquals($attributes, $actionModel->actionable_attributes);
-	}
+        $this->assertEquals($attributes, $actionModel->actionable_attributes);
+    }
 }

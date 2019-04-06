@@ -10,22 +10,22 @@ use Tests\TestCase;
 
 class ImportingAscEmuDatabasesTest extends TestCase
 {
-	use RefreshDatabase, ImportsAscEmuDatabases;
+    use RefreshDatabase, ImportsAscEmuDatabases;
 
-	public function testItImportsTheDatabases()
-	{
-		$this->ImportsAscEmuDatabases();
+    public function testItImportsTheDatabases()
+    {
+        $this->ImportsAscEmuDatabases();
 
-		$logonTables = $this->ascEmuConnection('logon')->getDoctrineSchemaManager()->listTableNames();
+        $logonTables = $this->ascEmuConnection('logon')->getDoctrineSchemaManager()->listTableNames();
 
-		$this->assertNotEmpty($logonTables);
+        $this->assertNotEmpty($logonTables);
 
-		$characterTables = $this->ascEmuConnection('characters')->getDoctrineSchemaManager()->listTableNames();
+        $characterTables = $this->ascEmuConnection('characters')->getDoctrineSchemaManager()->listTableNames();
 
-		$this->assertNotEmpty($characterTables);
+        $this->assertNotEmpty($characterTables);
 
-		$worldTables = $this->ascEmuConnection('world')->getDoctrineSchemaManager()->listTableNames();
+        $worldTables = $this->ascEmuConnection('world')->getDoctrineSchemaManager()->listTableNames();
 
-		$this->assertNotEmpty($worldTables);
-	}
+        $this->assertNotEmpty($worldTables);
+    }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Contracts;
 
-interface Action 
+interface Action
 {
-	/**
-	 * Execute the command
-	 * 
-	 * @return void             
-	 */
-	public function run();
+    /**
+     * Execute the command
+     *
+     * @return void
+     */
+    public function run();
 }

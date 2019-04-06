@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     /**
      * The actions this user has created
-     * 
+     *
      * @return HasMany
      */
     public function actions(): HasMany
