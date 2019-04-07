@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Account;
 use App\Enums\AccountFlag;
 use App\Server;
 use App\ServerStrategy;
@@ -71,11 +72,18 @@ class RegistrationTest extends TestCase
             'name' => $name
         ])->firstOrFail();
 
-        $this->assertDatabaseHas('accounts', [
+        $account = Account::query()->where([
             'email' => $email,
             'acc_name' => $name,
             'flags' => AccountFlag::DEFAULT
-        ], 'ascemu_logon');
+        ])->firstOrFail();
+
+        $this->assertDatabaseHas('actions', [
+            'creator_id' => $user->id,
+            'actionable_type' => Account::class,
+            'actionable_id' => $account->id,
+            // 'actionable_attributes' => '{"email": $email, "acc_name": $name}'
+        ]);
     }
 
     public function testItAssignsPlayerRoleToTheUser()

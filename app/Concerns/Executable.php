@@ -10,15 +10,13 @@ trait Executable
     /**
      * Execute this action
      *
-     * @param  Model  $actionable
      * @param  mixed  ...$attributes
      * @return Action
      */
-    public static function execute(Model $actionable, ...$attributes): Action
+    public static function execute(...$attributes): Action
     {
         return Action::execute(
-            new static(...$attributes),
-            $actionable
+            new static(...$attributes)
         );
     }
 }

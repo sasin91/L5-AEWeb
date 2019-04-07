@@ -38,7 +38,7 @@ class CreateAccount implements ActionContract
      */
     public function run()
     {
-        Account::query()->create([
+        return Account::query()->create([
             'acc_name' => $this->name,
             'encrypted_password' => $this->password,
             'banned' => $this->banned,

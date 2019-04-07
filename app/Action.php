@@ -32,16 +32,18 @@ class Action extends Model
      * @param  Model            $actionable
      * @return mixed
      */
-    public static function execute(ActionContract $action, Model $actionable)
+    public static function execute(ActionContract $action)
     {
-        return tap(new static, function (Action $model) use ($action, $actionable) {
+        return tap(new static, function (Action $model) use ($action) {
             $model->creator()->associate(Auth::user());
-            $model->actionable()->associate($actionable);
             $model->actionable_attributes = get_object_vars($action);
             $model->class_name = get_class($action);
             $model->saveOrFail();
             
-            $action->run();
+            if($actionable = $action->run()) {
+                $model->actionable()->associate($actionable);
+                $model->saveOrFail();
+            }
 
             $model->markAsExecuted();
         });

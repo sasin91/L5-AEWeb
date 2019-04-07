@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Account;
 use App\Actions\CreateAccount;
 use App\Enums\AccountFlag;
 use App\Hashing\Sha1Hasher;
@@ -85,7 +86,7 @@ class RegisterController extends Controller
     {
         $user->assignRole('Player');
 
-        CreateAccount::execute($user, [
+        CreateAccount::execute([
             'name' => $request->input('name'),
             'password' => (new Sha1Hasher)->make($request->input('password'), ['name' => $request->input('name')]),
             'email' => $request->input('email'),

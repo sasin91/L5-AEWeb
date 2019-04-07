@@ -17,7 +17,7 @@ class CreateActionsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('creator_id')->unsigned()->nullable()->index();
             $table->foreign('creator_id')->references('id')->on('users')->onDelete('SET NULL');
-            $table->morphs('actionable');
+            $table->nullableMorphs('actionable');
             $table->json('actionable_attributes');
             $table->timestamp('executed_at')->nullable();
             $table->timestamps();

@@ -27,8 +27,8 @@ class ExecutingActionsTest extends TestCase
         $this->assertDatabaseHas('actions', [
             'id' => $actionModel->id,
             'creator_id' => $actionable->id,
-            'actionable_type' => User::class,
-            'actionable_id' => $actionable->id,
+            'actionable_type' => null,
+            'actionable_id' => null,
             // 'actionable_attributes' => '{"bar": "baz", "foo": "bar"}'
         ]);
 
