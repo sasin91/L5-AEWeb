@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\__Fixtures__;
+namespace Tests\__Fixtures__\Actions;
 
 use App\Contracts\Action as ActionContract;
 use IteratorAggregate;

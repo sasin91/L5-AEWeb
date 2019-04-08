@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\ActionAttributes;
 use App\Contracts\Action as ActionContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,7 +39,7 @@ class Action extends Model
             $model->class_name = get_class($action);
             $model->saveOrFail();
             
-            if($actionable = $action->run()) {
+            if ($actionable = $action->run()) {
                 $model->actionable()->associate($actionable);
                 $model->saveOrFail();
             }

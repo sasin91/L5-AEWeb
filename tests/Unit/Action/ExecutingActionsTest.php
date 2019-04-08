@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Tests\__Fixtures__\FakeAction;
+use Tests\__Fixtures__\Actions\FakeAction;
 
 class ExecutingActionsTest extends TestCase
 {
