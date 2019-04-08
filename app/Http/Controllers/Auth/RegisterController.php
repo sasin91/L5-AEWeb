@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Account;
+use App\Actions\AssociateExistingAccount;
 use App\Actions\CreateAccount;
 use App\Enums\AccountFlag;
 use App\Hashing\Sha1Hasher;
@@ -54,7 +55,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:40', 'alpha_num'],
+            'name' => ['required', 'string', 'max:40', 'alpha_num', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed']
         ]);
@@ -86,12 +87,19 @@ class RegisterController extends Controller
     {
         $user->assignRole('Player');
 
-        CreateAccount::execute([
-            'name' => $request->input('name'),
-            'password' => (new Sha1Hasher)->make($request->input('password'), ['name' => $request->input('name')]),
-            'email' => $request->input('email'),
-            'flags' => AccountFlag::DEFAULT,
-            'banned' => 0
-        ]);
+        if (Account::query()->where('acc_name', $request->input('name'))->exists()) {
+            AssociateExistingAccount::execute(
+                $request->input('name'),
+                $user->getKey()
+            );
+        } else {
+            CreateAccount::execute([
+                'name' => $request->input('name'),
+                'password' => (new Sha1Hasher)->make($request->input('password'), ['name' => $request->input('name')]),
+                'email' => $request->input('email'),
+                'flags' => AccountFlag::DEFAULT,
+                'banned' => 0
+            ]);
+        }
     }
 }

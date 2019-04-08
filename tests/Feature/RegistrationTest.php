@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Account;
+use App\Actions\AssociateExistingAccount;
 use App\Enums\AccountFlag;
 use App\Server;
 use App\ServerStrategy;
@@ -106,6 +107,34 @@ class RegistrationTest extends TestCase
             $user->hasRole('Player'),
             'User was not assigned Player role.'
         );
+    }
+
+    public function testItAssociateWithAnExistingAccount()
+    {
+        $this->importAscEmuLogonDatabase();
+
+        $account = factory(Account::class)->create([
+            'acc_name' => $name = $this->faker()->firstname,
+        ]);
+
+        $this
+            ->postJson('/register', $this->validParams([
+                'email' => $email = $this->faker()->safeEmail,
+                'name' => $name
+            ]))
+            ->assertRedirect('/home');
+
+        $user = User::query()->where([
+            'email' => $email,
+            'name' => $name
+        ])->firstOrFail();
+
+        $this->assertDatabaseHas('actions', [
+            'class_name' => AssociateExistingAccount::class,
+            'creator_id' => $user->id,
+            'actionable_type' => Account::class,
+            'actionable_id' => $account->id
+        ]);
     }
 
     public function validParams(array $overrides = [])
