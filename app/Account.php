@@ -25,10 +25,8 @@ class Account extends Model
     ];
 
     protected $casts = [
-        'banned' => 'datetime',
         'lastlogin' => 'datetime',
         'flags' => 'integer',
-        'muted' => 'datetime',
         'joindate' => 'datetime'
     ];
 
@@ -52,5 +50,34 @@ class Account extends Model
     public function getLinkAttribute(): string
     {
         return url('accounts', $this);
+    }
+
+    public function getBannedAttribute($value)
+    {
+        return $this->castToDateTimeIfGreaterThanZero(
+            (int)$value
+        );
+    }
+
+    public function getMutedAttribute($value)
+    {
+        return $this->castToDateTimeIfGreaterThanZero(
+            (int)$value
+        );
+    }
+
+    /**
+     * Cast given unix timestamp to a DateTime instance, if greater than zero.
+     *
+     * @param  int    $unixTimestamp
+     * @return int
+     */
+    protected function castToDateTimeIfGreaterThanZero(int $unixTimestamp)
+    {
+        if ($unixTimestamp > 0) {
+            return $this->asDateTime($unixTimestamp);
+        }
+
+        return $unixTimestamp;
     }
 }
