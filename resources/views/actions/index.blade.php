@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-	@include('partials.actions-table', ['actions' => $actions])
+	<div class="container-fluid">
+	    <div class="card shadow-lg">
+	        <h5 class="card-header text-center">
+	            {{ __('Game servers') }}
+	        </h5>
+	        <div class="card-body">
+	        	@include('partials.actions-table', ['actions' => $actions])
 
-	{!! $actions->links() !!}
+				{!! $actions->links() !!}
+			</div>
+		</div>
+	</div>
 @endsection
