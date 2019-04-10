@@ -20,9 +20,11 @@ class RolesAndPermissionsSeeder extends Seeder
 
         $this->createPlayer($roleModel, $permissionModel);
 
-        $this->createSuperAdmin($roleModel, $permissionModel);
-
         $this->createForumModerator($roleModel, $permissionModel);
+
+        $this->createAdmin($roleModel, $permissionModel);
+
+        $this->createSuperAdmin($roleModel, $permissionModel);
     }
 
     public function createPlayer($roleModel, $permissionModel)
@@ -35,15 +37,27 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
     }
 
-    public function createSuperAdmin($roleModel, $permissionModel)
+    public function createAdmin($roleModel, $permissionModel)
     {
-        $superAdmin = $roleModel::create(['name' => 'Super Admin']);
-        $superAdmin->givePermissionTo([
+        $admin = $roleModel::create(['name' => 'Admin']);
+        $admin->givePermissionTo([
             $permissionModel::create(['name' => 'restore actions']),
             $permissionModel::create(['name' => 'delete actions']),
             $permissionModel::create(['name' => 'list actions']),
             $permissionModel::create(['name' => 'view actions']),
+            $permissionModel::create(['name' => 'create game servers']),
+            $permissionModel::create(['name' => 'edit game servers']),
+            $permissionModel::create(['name' => 'delete game servers']),
+            $permissionModel::create(['name' => 'restore deleted game servers']),
+            $permissionModel::create(['name' => 'force delete game servers'])
         ]);
+    }
+
+    public function createSuperAdmin($roleModel, $permissionModel)
+    {
+        $superAdmin = $roleModel::create(['name' => 'Super Admin']);
+        // Super admin bypasses authorization, so no need to assign permissions.
+        // @see App\Providers\AuthServiceProvider@boot
     }
 
     public function createForumModerator($roleModel, $permissionModel)
