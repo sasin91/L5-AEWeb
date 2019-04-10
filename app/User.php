@@ -50,6 +50,16 @@ class User extends Authenticatable
     }
 
     /**
+     * The game servers this user has created
+     *
+     * @return HasMany
+     */
+    public function gameServers(): HasMany
+    {
+        return $this->hasMany(GameServer::class, 'creator_id');
+    }
+
+    /**
      * Link to this model
      *
      * @return string
