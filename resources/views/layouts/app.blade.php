@@ -36,6 +36,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            @link(['to' => 'game-servers'])
+                                {{ __('Servers') }} 
+                            @endlink   
+                        </li>
+
                         @can('list actions')
                             <li class="nav-item">
                                 @link(['to' => 'actions'])
@@ -67,6 +73,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @can('create game servers')
+                                        @link(['class' => 'dropdown-item', 'to' => 'game-servers/create'])
+                                            {{ __('Create game server') }}
+                                        @endlink
+                                    @endcan
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

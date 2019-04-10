@@ -23,4 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('home/actions', 'HomeActionsController@index');
 
     Route::resource('actions', 'ActionController')->except('create', 'store', 'edit', 'update');
+    Route::resource('game-servers', 'GameServerController')->except('index');
 });
+
+Route::get('game-servers', 'GameServerController@index')->name('game-servers.index');
