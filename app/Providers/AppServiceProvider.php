@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 
@@ -31,13 +30,5 @@ class AppServiceProvider extends ServiceProvider
             }
             return Str::title(Str::snake($value, ' '));
         });
-        
-        Blade::component('components.link', 'link');
-        Blade::component('components.form', 'form');
-        Blade::component('components.form-field', 'formField');
-        Blade::component('components.table', 'table');
-        Blade::component('components.alert', 'alert');
-        Blade::component('components.tab-link', 'tabLink');
-        Blade::component('components.tab-panel', 'tabPanel');
     }
 }
