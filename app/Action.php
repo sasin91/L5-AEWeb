@@ -35,7 +35,7 @@ class Action extends Model
     {
         return tap(new static, function (Action $model) use ($action) {
             $model->creator()->associate(Auth::user());
-            $model->actionable_attributes = get_object_vars($action);
+            $model->actionable_attributes = $action->attributes();
             $model->class_name = get_class($action);
             $model->saveOrFail();
             

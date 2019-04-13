@@ -15,6 +15,16 @@ class FakeAction implements ActionContract
     }
 
     /**
+     * Get the array of attributes for the action
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return get_object_vars($this);
+    }
+
+    /**
      * Execute the command
      *
      * @return void
