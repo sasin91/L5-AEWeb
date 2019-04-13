@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         Role::query()->each(function ($role) {
-        	$user = factory(User::class)->create([
-        		'name' => $role->name,
-        		'email' => "{$role->name}@example.com"
-        	]);
+            $user = factory(User::class)->create([
+                'name' => $role->name,
+                'email' => "{$role->name}@example.com"
+            ]);
 
-        	$user->assignRole($role);
+            $user->assignRole($role);
         });
     }
 }

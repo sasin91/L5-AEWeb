@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Action;
+use App\Actions\CreateGameServer;
+use App\Actions\DeleteGameServer;
+use App\Actions\UpdateGameServer;
 use App\GameServer;
 use App\Http\Requests\StoreGameServerRequest;
+use App\Http\Requests\UpdateGameServerRequest;
 use Illuminate\Http\Request;
 
 class GameServerController extends Controller
@@ -51,14 +56,11 @@ class GameServerController extends Controller
      */
     public function store(StoreGameServerRequest $request)
     {
-        $gameServer = $request
-            ->user()
-            ->gameServers()
-            ->create($request->validated());
+        $action = CreateGameServer::execute($request->validated());
 
         flash()->success(__('Game server created.'));
 
-        return redirect()->route('game-servers.show', $gameServer);
+        return redirect()->route('game-servers.show', $action->actionable);
     }
 
     /**
@@ -80,7 +82,7 @@ class GameServerController extends Controller
      */
     public function edit(GameServer $gameServer)
     {
-        //
+        return view('gameServers.edit')->with('gameServer', $gameServer);
     }
 
     /**
@@ -90,9 +92,17 @@ class GameServerController extends Controller
      * @param  \App\GameServer  $gameServer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GameServer $gameServer)
+    public function update(UpdateGameServerRequest $request, GameServer $gameServer)
     {
-        //
+        Action::execute(
+            new UpdateGameServer($gameServer, $request->validated())
+        );
+
+        $gameServer->update($request->validated());
+
+        flash()->success(__('Game server updated.'));
+
+        return redirect()->route('game-servers.show', $gameServer);
     }
 
     /**
@@ -103,6 +113,10 @@ class GameServerController extends Controller
      */
     public function destroy(GameServer $gameServer)
     {
-        //
+        DeleteGameServer::execute($gameServer);
+
+        flash()->success(__('Game server deleted.'));
+
+        return redirect()->route('game-servers.index');
     }
 }

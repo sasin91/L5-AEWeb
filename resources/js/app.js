@@ -26,6 +26,8 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.config.ignoredElements = ['trix-editor', 'trix-toolbar']
+
 const app = new Vue({
     el: '#app'
 });
