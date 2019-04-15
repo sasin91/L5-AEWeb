@@ -98,8 +98,6 @@ class GameServerController extends Controller
             new UpdateGameServer($gameServer, $request->validated())
         );
 
-        $gameServer->update($request->validated());
-
         flash()->success(__('Game server updated.'));
 
         return redirect()->route('game-servers.show', $gameServer);
