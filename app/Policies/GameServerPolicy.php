@@ -55,7 +55,8 @@ class GameServerPolicy
      */
     public function delete(User $user, GameServer $gameServer)
     {
-        return $user->hasPermissionTo('delete game servers');
+        return !$gameServer->trashed()
+            && $user->hasPermissionTo('delete game servers');
             // && $gameServer->creator->is($user);
     }
 
@@ -68,7 +69,8 @@ class GameServerPolicy
      */
     public function restore(User $user, GameServer $gameServer)
     {
-        return $user->hasPermissionTo('restore deleted game servers');
+        return $gameServer->trashed()
+            && $user->hasPermissionTo('restore deleted game servers');
     }
 
     /**

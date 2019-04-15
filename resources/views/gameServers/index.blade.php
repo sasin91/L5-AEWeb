@@ -7,30 +7,35 @@
 @php
 	$gameServerActions = [
 		'view game server' => [
+			'gate' => 'view',
 			'icon' => 'fa fa-eye',
 			'type' => 'link',
 			'route' => 'game-servers.show'
 		],
 		
 		'edit game servers' => [
+			'gate' => 'edit',
 			'icon' => 'fa fa-edit',
 			'type' => 'link',
 			'route' => "game-servers.edit"
 		],
 
 		'delete game servers' => [
+			'gate' => 'delete',
 			'icon' => 'fa fa-trash',
 			'type' => 'button',
 			'action' => 'destroy'
 		],
 
 		'restore deleted game servers' => [
+			'gate' => 'restore',
 			'icon' => 'fa fa-recycle',
 			'type' => 'button',
 			'action' => 'restore'
 		], 
 
 		'force delete game servers' => [
+			'gate' => 'forceDelete',
 			'icon' => 'fa fa-eraser',
 			'type' => 'button',
 			'action' => 'forceDestroy'
@@ -46,7 +51,7 @@
 		            {{ __('Game servers') }}
 		        </h5>
 		        <div class="card-body">
-					@table(['headers' => [__('Name'), __('Game Version'), __('Realmlist'), __('Description'), Gate::forUser(Auth::user())->any(array_keys($gameServerActions)) ? __('Actions') : null]])
+					@table(['headers' => [__('Name'), __('Game Version'), __('Realmlist'), __('Description'), __('Actions')]])
 						@foreach($gameServers as $gameServer)
 							<tr>
 								<td>
@@ -63,17 +68,19 @@
 								</td>
 								<td>
 									@foreach($gameServerActions as $name => $options)
-										@if($options['type'] === 'link')
-											<a  class="btn btn-flush" href="{{ route($options['route'], $gameServer) }}" data-toggle="tooltip" data-placement="top" title="{{ $name }}">
-												<i class="{{ $options['icon'] }}"></i>
-												{{-- {{ __($name) }} --}}
-											</a>
-										@else
-											<button class="btn btn-flush" @click="{{ $options['action'] }}({{ $gameServer->id }})" data-toggle="tooltip" data-placement="top" title="{{ $name }}">
-												<i class="{{ $options['icon'] }}"></i>
-												{{-- {{ __($name) }} --}}
-											</button>
-										@endif
+										@can($options['gate'], $gameServer)
+											@if($options['type'] === 'link')
+												<a  class="btn btn-flush" href="{{ route($options['route'], $gameServer) }}" data-toggle="tooltip" data-placement="top" title="{{ $name }}">
+													<i class="{{ $options['icon'] }}"></i>
+													{{-- {{ __($name) }} --}}
+												</a>
+											@else
+												<button class="btn btn-flush" @click="{{ $options['action'] }}({{ $gameServer->id }})" data-toggle="tooltip" data-placement="top" title="{{ $name }}">
+													<i class="{{ $options['icon'] }}"></i>
+													{{-- {{ __($name) }} --}}
+												</button>
+											@endif
+										@endcan
 									@endforeach
 								</td>
 							</tr>
